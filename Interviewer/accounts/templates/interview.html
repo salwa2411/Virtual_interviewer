@@ -1,0 +1,228 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" rel="stylesheet">
+
+    <title>Virtual Interviewer</title>
+<!--
+
+TemplateMo 548 Training Studio
+
+https://templatemo.com/tm-548-training-studio
+
+-->
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/font-awesome.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/css/templatemo-training-studio.css' %}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Interview</title>
+  </head>
+  <body>
+        <!-- ***** Preloader Start ***** -->
+    <div id="js-preloader" class="js-preloader">
+        <div class="preloader-inner">
+          <span class="dot"></span>
+          <div class="dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+      <!-- ***** Preloader End ***** -->
+      <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="{% url 'home' %}" class="logo">Virtual<em> Interviewer</em></a>
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** --> 
+                        <ul class="nav">
+                            {% comment %} <li class="main-button"> <a href="#" >{{user.username}}</a> </li> {% endcomment %}
+                            <h3 style="color:white;"> {{user.username}} </h3> 
+                        </ul>    
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
+    <div class="main-banner" id="top">
+        <!-- <video autoplay muted loop id="bg-video"> -->
+            <img src="{% static 'assets/images/myvi5.jpg' %}" id="bg-video" />
+        <!-- </video> -->
+
+
+        <div class="video-overlay header-text">
+        <div class="caption">
+            
+            <video id="video" width="320" height="240" muted = "muted" autoplay></video>
+            <br> 
+            <button id="start-camera" class="button">Start Camera</button>
+            <br>
+            <button id="start-record" class="button">Start Recording</button>
+            <br> 
+            <button id="stop-record" class="button">Stop Recording</button>
+            <br> 
+            <a id="download-video" download="test.mp4">Download Video</a>
+            <br> 
+            <script type="text/javascript">
+                
+            
+                let camera_button = document.querySelector("#start-camera");
+            let video = document.querySelector("#video");
+            let start_button = document.querySelector("#start-record");
+            let stop_button = document.querySelector("#stop-record");
+            let download_link = document.querySelector("#download-video");
+            
+            let camera_stream = null;
+            let media_recorder = null;
+            let blobs_recorded = [];
+            
+            camera_button.addEventListener('click', async function() {
+                   camera_stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                video.srcObject = camera_stream;
+            });
+            
+            start_button.addEventListener('click', function() {
+                // set MIME type of recording as video/webm
+                media_recorder = new MediaRecorder(camera_stream, { mimeType: 'video/webm' });
+            
+                // event : new recorded video blob available 
+                media_recorder.addEventListener('dataavailable', function(e) {
+                    blobs_recorded.push(e.data);
+                });
+            
+                // event : recording stopped & all blobs sent
+                media_recorder.addEventListener('stop', function() {
+                    // create local object URL from the recorded video blobs
+                    let video_local = URL.createObjectURL(new Blob(blobs_recorded, { type: 'video/webm' }));
+                    download_link.href = video_local;
+                });
+            
+                // start recording with each recorded blob having 1 second video
+                media_recorder.start(1000);
+            });
+            
+            stop_button.addEventListener('click', function() {
+                media_recorder.stop(); 
+            });
+            </script>
+    </div>
+</div>
+
+        <!-- <div class="video-overlay header-text">
+            <div class="caption">
+                <h6>Grab Your Dream Job</h6>
+                <h2>With Efforts <em> & Practice</em></h2>
+                <div class="main-button scroll-to-section">
+                    <a href="interview.html">Give an Interview</a>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <!-- <h1 style="text-align: center;">Hello, world!</h1> -->
+    <!-- Button trigger modal -->
+
+    
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Instructions</h5>
+            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+            <!-- <span aria-hidden="true">&times;</span> -->
+            <!-- </button> -->
+        </div>
+        <div class="modal-body">
+          <!-- <h1 style="text-align: center;">Hello, world!</h1> -->
+          <ul>
+            <li>To start the Interview you have to click on the start button.</li>
+            <li>An access to the webcam and microphone would be required.</li>
+            <li>Press allow and the webcam would be turned on.</li>
+            <li>The interview would be recorded.</li>
+            <li>On click of start button a timer will start on the top right corner.</li>
+            <li>The count down of 5 seconds on the main interview screen.</li>
+            <li>Each question would be having a alotted time for you to answer.</li>
+            <li>Make sure you are in a room with least noise.</li>
+            <li>Questions won't be repeated by the interviewer.</li>
+            <li>Once the questions are over your interview will stop.</li>
+            <li>Your report would be send to you soon.</li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+            <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+            <button type="button" class="button" data-dismiss="modal">Start Interview</button>
+            <style>
+            .button {
+                background-color: #58a5f0;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+            }
+                </style>
+            
+        </div>
+        </div>
+    </div>
+    </div>
+
+
+ 
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script>
+       $(document).ready(function(){
+            $('#exampleModal').modal('show');
+        }); 
+    </script>
+      <!-- jQuery -->
+      <script src="{% static 'assets/js/jquery-2.1.0.min.js'%}"></script>
+
+      <!-- Bootstrap -->
+      <script src="{% static 'assets/js/popper.js'%}"></script>
+      <script src="{% static 'assets/js/bootstrap.min.js'%}"></script>
+  
+      <!-- Plugins -->
+      <script src="{% static 'assets/js/scrollreveal.min.js'%}"></script>
+      <script src="{% static 'assets/js/waypoints.min.js'%}"></script>
+      <script src="{% static 'assets/js/jquery.counterup.min.js'%}"></script>
+      <script src="{% static 'assets/js/imgfix.min.js'%}"></script> 
+      <script src="{% static 'assets/js/mixitup.js'%}"></script> 
+      <script src="{% static 'assets/js/accordions.js'%}"></script>
+      
+      <!-- Global Init -->
+      <script src="{% static 'assets/js/custom.js'%}"></script>
+  </body>
+</html>
