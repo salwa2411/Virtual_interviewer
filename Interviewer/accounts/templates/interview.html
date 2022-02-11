@@ -49,10 +49,7 @@ https://templatemo.com/tm-548-training-studio
             <div class="row">
                 <div class="col-12">
                     <nav class="main-nav">
-                        <!-- ***** Logo Start ***** -->
                         <a href="{% url 'home' %}" class="logo">Virtual<em> Interviewer</em></a>
-                        <!-- ***** Logo End ***** -->
-                        <!-- ***** Menu Start ***** --> 
                         <ul class="nav">
                             {% comment %} <li class="main-button"> <a href="#" >{{user.username}}</a> </li> {% endcomment %}
                             <h3 style="color:white;"> {{user.username}} </h3> 
@@ -60,91 +57,97 @@ https://templatemo.com/tm-548-training-studio
                         <a class='menu-trigger'>
                             <span>Menu</span>
                         </a>
-                        <!-- ***** Menu End ***** -->
                     </nav>
                 </div>
             </div>
         </div>
     </header>
     <!-- ***** Header Area End ***** -->
+    <style type="text/css">
+        * {
+          box-sizing: border-box;
+        }
+
+        /* Create two equal columns that floats next to each other */
+        .column {
+          float: left;
+          width: 50%;
+          padding: 5px;
+          height: 300px; /* Should be removed. Only for demonstration */
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+          content: "";
+          display: table;
+          clear: both;
+          vertical-align: top;
+        }
+
+        @media screen and (max-width: 600px) {
+          .column {
+            width: 100%;
+          }
+        }
+        .timer{
+          display: flex;
+          align-items: center;
+          float: right;
+          margin-top: 2%;
+          margin-right: 1%;
+          justify-content: space-between;
+          width: 145px;
+          height: 45px;
+          background: white;
+          border: 1px solid #b8daff;
+          border-radius: 5px;
+          padding: 0 8px;
+        }
+        .timer .time-text{
+          font-weight: 400;
+          font-size: 17px;
+          user-select: none;
+        }
+        .timer .timer_sec{
+          font-size: 18px;
+          font-weight: 500;
+          background: #343a40;
+          height: 30px;
+          width: 45px;
+          color: #fff;
+          text-align: center;
+          line-height: 30px;
+          border-radius: 5px;
+          border: 1px solid #343a40;
+          user-select: none;
+        }
+    </style>
     <div class="main-banner" id="top">
-        <!-- <video autoplay muted loop id="bg-video"> -->
-            <img src="{% static 'assets/images/myvi5.jpg' %}" id="bg-video" />
-        <!-- </video> -->
-
-
+        <img src ="{% static 'assets/images/myvi5.jpg'%}" id="bg-video"/>
         <div class="video-overlay header-text">
-        <div class="caption">
-            
-            <video id="video" width="320" height="240" muted = "muted" autoplay></video>
-            <br> 
-            <button id="start-camera" class="button">Start Camera</button>
-            <br>
-            <button id="start-record" class="button">Start Recording</button>
-            <br> 
-            <button id="stop-record" class="button">Stop Recording</button>
-            <br> 
-            <a id="download-video" download="test.mp4">Download Video</a>
-            <br> 
-            <script type="text/javascript">
-                
-            
-                let camera_button = document.querySelector("#start-camera");
-            let video = document.querySelector("#video");
-            let start_button = document.querySelector("#start-record");
-            let stop_button = document.querySelector("#stop-record");
-            let download_link = document.querySelector("#download-video");
-            
-            let camera_stream = null;
-            let media_recorder = null;
-            let blobs_recorded = [];
-            
-            camera_button.addEventListener('click', async function() {
-                   camera_stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-                video.srcObject = camera_stream;
-            });
-            
-            start_button.addEventListener('click', function() {
-                // set MIME type of recording as video/webm
-                media_recorder = new MediaRecorder(camera_stream, { mimeType: 'video/webm' });
-            
-                // event : new recorded video blob available 
-                media_recorder.addEventListener('dataavailable', function(e) {
-                    blobs_recorded.push(e.data);
-                });
-            
-                // event : recording stopped & all blobs sent
-                media_recorder.addEventListener('stop', function() {
-                    // create local object URL from the recorded video blobs
-                    let video_local = URL.createObjectURL(new Blob(blobs_recorded, { type: 'video/webm' }));
-                    download_link.href = video_local;
-                });
-            
-                // start recording with each recorded blob having 1 second video
-                media_recorder.start(1000);
-            });
-            
-            stop_button.addEventListener('click', function() {
-                media_recorder.stop(); 
-            });
-            </script>
-    </div>
-</div>
-
-        <!-- <div class="video-overlay header-text">
+          <div class="timer">
+            <div class="time-text">Time left</div>
+            <div class="timer_sec">1:00</div>
+          </div>
             <div class="caption">
-                <h6>Grab Your Dream Job</h6>
-                <h2>With Efforts <em> & Practice</em></h2>
-                <div class="main-button scroll-to-section">
-                    <a href="interview.html">Give an Interview</a>
+                <div class="row">
+                  <div class="column" style="background-color:#aaa; height: 480px;">
+                    <h3>Interview questions</h3>
+                    <p>Tell me about Yourself...</p>
+                  </div>
+                  <div class="column" style="padding-top: 0;">
+                    <video id="video" align=right muted="muted" autoplay></video>
+                    <div class="b">
+                        <!-- <button id="start-record" class="button btn">Start Recording</button> -->
+                        <button id="stop-record" class="button btn">Stop Recording</button>
+                        <a id="download-video" download="test.mp4">Download Video</a>
+                    </div>
+                  </div>
                 </div>
             </div>
         </div>
-    </div> -->
-    <!-- <h1 style="text-align: center;">Hello, world!</h1> -->
-    <!-- Button trigger modal -->
+    </div>
 
-    
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -174,7 +177,7 @@ https://templatemo.com/tm-548-training-studio
         </div>
         <div class="modal-footer">
             <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
-            <button type="button" class="button" data-dismiss="modal">Start Interview</button>
+            <button type="button" id="start-record" class="button" data-dismiss="modal">Start Interview</button>
             <style>
             .button {
                 background-color: #58a5f0;
@@ -188,14 +191,69 @@ https://templatemo.com/tm-548-training-studio
                 margin: 4px 2px;
                 cursor: pointer;
             }
-                </style>
+            </style>
             
         </div>
         </div>
     </div>
     </div>
 
-
+      <script type="text/javascript">    
+    let camera_button = document.querySelector("#start-camera");
+    let video = document.querySelector("#video");
+    let start_button = document.querySelector("#start-record");
+    let stop_button = document.querySelector("#stop-record");
+    let download_link = document.querySelector("#download-video");
+    
+    let camera_stream = null;
+    let media_recorder = null;
+    let blobs_recorded = [];
+    
+    async function startWebCam() {
+           camera_stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        video.srcObject = camera_stream;
+    }
+    startWebCam();
+    start_button.addEventListener('click', function() {
+        // set MIME type of recording as video/webm
+        media_recorder = new MediaRecorder(camera_stream, { mimeType: 'video/webm' });
+    
+        // event : new recorded video blob available 
+        media_recorder.addEventListener('dataavailable', function(e) {
+            blobs_recorded.push(e.data);
+        });
+    
+        // event : recording stopped & all blobs sent
+        media_recorder.addEventListener('stop', function() {
+            // create local object URL from the recorded video blobs
+            let video_local = URL.createObjectURL(new Blob(blobs_recorded, { type: 'video/webm' }));
+            download_link.href = video_local;
+        });
+    
+        // start recording with each recorded blob having 1 second video
+        media_recorder.start(1000);
+    });
+    
+    stop_button.addEventListener('click', function() {
+        media_recorder.stop(); 
+    });
+      const startingMinutes = 1;
+      let time = startingMinutes*60;
+      const countdownEl = document.querySelector(".timer_sec");
+      function updateCountdown(){
+        const minutes = Math.floor(time / 60);
+        let seconds = time % 60;
+        seconds = seconds < 10 ? '0' + seconds : seconds; 
+        countdownEl.innerHTML = `${minutes}:${seconds}`;
+        time--;
+        if (time==0){
+          time = startingMinutes * 60
+        }
+      }
+      start_button.addEventListener('click', function () {
+        setInterval(updateCountdown, 1000)
+      }, false);
+</script>
  
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
