@@ -16,8 +16,10 @@ user.addEventListener('keyup', function(){
 })
 
 var strongRegex = new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");
-// var reg = String.raw`\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2-3,}\b`	
-let strongEmail = new RegExp("[a-z0-9]+@[a-z]+\.[a-z]{2,4}","g");
+// var reg = String.raw`\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2-3,}\b`
+// let strongEmail = new RegExp("[a-z0-9]+@[a-z]+\.[a-z]{2,4}","g");	
+let strongEmail = new RegExp("^([a-zA-Z0-9_.-]+)@([a-zA-Z]+)([\.])(com)$","g");
+
 var pass = document.querySelector('#pass');
 var pass1 = document.querySelector('#pass1');
 
@@ -31,6 +33,7 @@ pass.addEventListener('keyup', function(){
 		pass.style.border = '1px solid green';
 		p_times.style.display = "none";
 		p_check.style.display = "block";
+		document.getElementById('password-strength-status').style.color = "green";
 		document.getElementById('password-strength-status').innerHTML = "Strong Password";
 		return false;
 	}
@@ -38,10 +41,12 @@ pass.addEventListener('keyup', function(){
 		pass.style.border = '1px solid red';
 		p_times.style.display = 'block';
 		p_check.style.display = 'none';
+		document.getElementById('password-strength-status').style.color = "red";
 		document.getElementById('password-strength-status').innerHTML = "Weak Password";
 		return false;
 	}
 	else if (pass.value.length == 0){
+		document.getElementById('password-strength-status').style.color = "red";
 		document.getElementById('password-strength-status').innerHTML = "*Please fill the required fields!";
 		return false;
 	}
@@ -60,6 +65,7 @@ pass1.addEventListener('keyup', function(){
 		pass1.style.border = '1px solid green';
 		p_times1.style.display = "none";
 		p_check1.style.display = "block";
+		document.getElementById('password-strength-status').style.color = "green";
 		document.getElementById('password-strength-status').innerHTML = "password matched";
 		
 
@@ -68,6 +74,7 @@ pass1.addEventListener('keyup', function(){
 		pass1.style.border = '1px solid red';
 		p_times1.style.display = 'block';
 		p_check1.style.display = 'none';
+		document.getElementById('password-strength-status').style.color = "red";
 		document.getElementById('password-strength-status').innerHTML = "mistach password";
 		
 
@@ -87,6 +94,7 @@ email.addEventListener('keyup', function(){
 		email.style.border = '1px solid green';
 		e_times.style.display = "none";
 		e_check.style.display = "block";
+		document.getElementById('password-strength-status').style.color = "green";
 		document.getElementById('password-strength-status').innerHTML = "Valid Email";
 		console.log(strongRegex.test(pass.value))
 		return false;
@@ -96,6 +104,7 @@ email.addEventListener('keyup', function(){
 		email.style.border = '1px solid red';
 		e_times.style.display = 'block';
 		e_check.style.display = 'none';
+		document.getElementById('password-strength-status').style.color = "red";
 		document.getElementById('password-strength-status').innerHTML = "Please Enter Correct Email";
 		return false;
 		}
@@ -104,6 +113,7 @@ email.addEventListener('keyup', function(){
 
 function validate(){
 	if (user.value == 0 || user.value.length < 6){
+		document.getElementById('password-strength-status').style.color = "red";
 		document.getElementById('error').innerHTML = "Please fill the required fields!";
 		return false;
 	}
