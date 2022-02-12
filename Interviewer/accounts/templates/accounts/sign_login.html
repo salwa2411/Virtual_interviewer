@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" rel="stylesheet">
 
     <title>Login</title>
@@ -21,6 +22,7 @@ https://templatemo.com/tm-548-training-studio
 -->
     <!-- Additional CSS Files -->
     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/style.css' %}">
 
     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/font-awesome.css' %}">
 
@@ -120,25 +122,35 @@ https://templatemo.com/tm-548-training-studio
 														<div class="center-wrap">
 															<div class="section text-center">
 																<h4 class="mb-4 pb-3">Sign Up</h4>
-                                <form method="POST" action= "{% url 'register' %}">
+                                <form method="POST" action= "{% url 'register' %}" >
                                 {% csrf_token %}
-																<div class="form-group">
+																<div class="form-group form-grp">
                                 
-																	<input type="text" name="username" class="form-style" placeholder="Username" id="logname" autocomplete="off" required>
+																	<input type="text" name="username" class="form-style" placeholder="Username" id="user" autocomplete="off" required>
+                                  <i class="fa fa-times u_times"></i>
+			                            <i class="fa fa-check u_check"></i>
 																	<i class="input-icon uil uil-user"></i>
 																</div>	
-																<div class="form-group mt-2">
-																	<input type="email" name="email" class="form-style" placeholder="Email" id="logemail" autocomplete="off" required>
-																	<i class="input-icon uil uil-at"></i>
+																<div class="form-group form-grp mt-2">
+																	<input type="email" name="mail" class="form-style" placeholder="Email" id="mail" autocomplete="off" required>
+																	<i class="fa fa-times e_times"></i>
+			                            <i class="fa fa-check e_check"></i>
+                                  <i class="input-icon uil uil-at"></i>
+                                  
 																</div>	
-																<div class="form-group mt-2">
-																	<input type="password" name="password1" class="form-style" placeholder="Password" id="logpass" autocomplete="off" required>
-																	<i class="input-icon uil uil-lock-alt"></i>
+																<div class="form-group form-grp mt-2">
+																	<input type="password" name="password1" class="form-style" placeholder="Password" id="pass" autocomplete="off" required>
+																	<i class="fa fa-times p_times"></i>
+			                            <i class="fa fa-check p_check"></i>
+                                  <i class="input-icon uil uil-lock-alt"></i>
 																</div>
-                                <div class="form-group mt-2">
-																	<input type="password" name="password2" class="form-style" placeholder="Confirm Password" id="logpass" autocomplete="off" required>
-																	<i class="input-icon uil uil-lock-alt"></i>
+                                <div class="form-group form-grp mt-2">
+																	<input type="password" name="password2" class="form-style" placeholder="Confirm Password" id="pass1" autocomplete="off" required>
+																	<i class="fa fa-times p_times1"></i>
+			                            <i class="fa fa-check p_check1"></i>
+                                  <i class="input-icon uil uil-lock-alt"></i>
 																</div>
+                                <p id="password-strength-status" style="color:red;"></p>
 																<button type="submit" value="submit" class="btn mt-4">submit</button>
                                 </form>
 															  </div>
@@ -251,6 +263,7 @@ and decrease the rate of unemployment in our country.
     
     <!-- Global Init -->
     <script src="{% static 'assets/js/custom.js' %}"></script>
+    <script src="{% static 'assets/js/script.js' %}"></script>
 
   </body>
 </html>
