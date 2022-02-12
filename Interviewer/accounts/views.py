@@ -62,7 +62,8 @@ def logoutUser(request):
 
 def takeInterview(request):
     if request.user.is_authenticated:
-        return render(request,'interview.html')
+        questions = ["Tell me About Yourself", "Why should we hire you?", "What are your strengths and weaknesses?"]
+        return render(request,'interview.html', {'questions': questions})
     return redirect('login')
 
 '''
