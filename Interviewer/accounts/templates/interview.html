@@ -264,6 +264,7 @@ https://templatemo.com/tm-548-training-studio
     
     stop.addEventListener('click', function() {
         media_recorder.stop(); 
+        window.location.replace("{% url 'home' %}");
     });
       const startingMinutes = 1;
       let time = startingMinutes*60;
