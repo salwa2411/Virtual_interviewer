@@ -205,6 +205,17 @@ https://templatemo.com/tm-548-training-studio
     </div>
 
     <script type="text/javascript">
+    var txtInput = document.querySelector("#question");
+    let synth = speechSynthesis;
+    isSpeaking = true;
+    function textToSpeech(text){
+      let utterance = new SpeechSynthesisUtterance(text);
+      for(let voice of synth.getVoices()){
+              utterance.voice = voice;
+              break;
+      }
+      synth.speak(utterance);
+    }
     var a = "{{ questions }}";
     a = a.replace("[", "");
     a = a.replace("]", "");
@@ -254,7 +265,6 @@ https://templatemo.com/tm-548-training-studio
     stop.addEventListener('click', function() {
         media_recorder.stop(); 
     });
-
       const startingMinutes = 1;
       let time = startingMinutes*60;
       const countdownEl = document.querySelector(".timer_sec");
@@ -266,6 +276,7 @@ https://templatemo.com/tm-548-training-studio
         time--;
         if (time==0){
           document.querySelector("#question").innerHTML = splitquestions[count];
+          textToSpeech(splitquestions[count]);
           count++;
           if (count == (splitquestions.length+1)){
             media_recorder.stop();
@@ -275,6 +286,7 @@ https://templatemo.com/tm-548-training-studio
         }
       }
       start_button.addEventListener('click', function () {
+        textToSpeech(splitquestions[0]);
         interval = setInterval(updateCountdown, 1000);
       }, false);
 
@@ -286,6 +298,7 @@ https://templatemo.com/tm-548-training-studio
           seconds = seconds < 10 ? '0' + seconds : seconds; 
           countdownEl.innerHTML = `${minutes}:${seconds}`;
           document.querySelector("#question").innerHTML = splitquestions[count];
+          textToSpeech(splitquestions[count]);
           count ++;
           if (count == (splitquestions.length+1)){
             media_recorder.stop();
