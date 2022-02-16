@@ -66,6 +66,16 @@ def takeInterview(request):
         return render(request,'interview.html', {'questions': questions})
     return redirect('login')
 
+def temp(request):
+    if request.method == 'POST':
+        
+        video = request.FILES['file']
+        print("video",video)
+
+        return HttpResponse("Done")
+    return render(request,'temp.html')
+
+
 '''
 def gen(camera):
     i = 0
@@ -83,10 +93,7 @@ def gen(camera):
 def video_feed(request):
     return StreamingHttpResponse(gen(VideoCamera()),content_type='multipart/x-mixed-replace; boundary=frame')
 
-def temp(request):
 
-
-    return render(request,'temp.html')
 
 def temp1(request):
     return render(request,'temp1.html')

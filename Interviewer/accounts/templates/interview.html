@@ -134,18 +134,32 @@ https://templatemo.com/tm-548-training-studio
           </div>
             <div class="caption">
                 <div class="row">
-                  <div class="column" style="background-color:#aaa; height: 480px;">
-                    <h3>Interview questions</h3>
-                    <p id="question" >{{ questions.0 }}</p>
+                  <div class="column" style="background-color:#fff; height: 480px;">
+                    <h3><font face="Ariel" size="5px" color="#808080">Interview questions</font></h3>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                  
+                    <p id="question" style ="font-family:Ariel; font-size:50px; color:#000;">{{ questions.0 }}</p>
                   </div>
                   <div class="column" style="padding-top: 0;">
                     <video id="video" align=right muted="muted" autoplay></video>
                     <div class="b">
-                        <!-- <button id="start-record" class="button btn">Start Recording</button> -->   
+                        <!-- <button id="start-record" class="button btn">Start Recording</button>    -->
                         <button id="stop-record" class="button btn">Next Question</button>
                         <!-- <a href="" class="btn btn-primary btn-md" id="stop-record" role="button">Next Questions</a> -->
-                        <a href="{% url 'home' %}" id="stop" class="btn button btn-md" role="button">End Interview</a>
-                          <!-- <button id="stop" class="button btn">Stop Recording</button> -->
+                        <!-- <a href="{% url 'home' %}" id="stop" class="btn button btn-md" role="button">End Interview</a> -->
+                        <form  enctype="multipart/form-data">
+                          <!-- {% csrf_token %} -->
+                          
+                          <input type="text" id = "file" name = "file">
+
+                          <input id="stop" class="btn button btn-md" name="video" role="button" value="End Interview">
+                        </form>
+
+                        <!-- <button id="stop" class="button btn">Stop Recording</button> -->
                         <!-- <a id="download-video" download="test.mp4">Download Video</a> -->
                     </div>
                   </div>
@@ -263,8 +277,24 @@ https://templatemo.com/tm-548-training-studio
     });
     
     stop.addEventListener('click', function() {
-        media_recorder.stop(); 
-        window.location.replace("{% url 'home' %}");
+        
+        media_recorder.stop();
+        let blob = new Blob(blobs_recorded, { 'type' : 'video/mp4;' });
+        blobs_recorded = [];
+        console.log("blob recorded", blobs_recorded)
+        console.log("blob size", blob.size)
+        console.log("blob text", blob.text())
+        // let videoURL = window.URL.createObjectURL(blob);
+        console.log("my blob is ", blob)
+
+        file = document.getElementById("file")
+
+        file.value = blob.text();
+        console.log(file.value);
+
+
+        // vidSave.src = videoURL;
+        // window.location.replace("{% url 'home' %}");
     });
       const startingMinutes = 1;
       let time = startingMinutes*60;
@@ -279,7 +309,11 @@ https://templatemo.com/tm-548-training-studio
           document.querySelector("#question").innerHTML = splitquestions[count];
           textToSpeech(splitquestions[count]);
           count++;
+          if (count == splitquestions.length){
+            stop_button.style.display="none";
+          }
           if (count == (splitquestions.length+1)){
+            stop_button.style.display="none"; 
             media_recorder.stop();
             window.location.replace("{% url 'home' %}");
           }
@@ -292,6 +326,8 @@ https://templatemo.com/tm-548-training-studio
       }, false);
 
       stop_button.addEventListener('click', function () {
+        // console.log("blobs recorded are", blobs_recorded)
+
           window.clearTimeout(interval);
           time = startingMinutes*60
           minutes = Math.floor(time / 60);
@@ -299,13 +335,27 @@ https://templatemo.com/tm-548-training-studio
           seconds = seconds < 10 ? '0' + seconds : seconds; 
           countdownEl.innerHTML = `${minutes}:${seconds}`;
           document.querySelector("#question").innerHTML = splitquestions[count];
+          // console.log(blobs_recorded)
           textToSpeech(splitquestions[count]);
           count ++;
-          if (count == (splitquestions.length+1)){
+          if (count == splitquestions.length){
+            stop_button.style.display="none";
+          }
+          if (count == (splitquestions.length+1)){ 
+            let blob = new Blob(blobs_recorded, { 'type' : 'video/mp4;' });
+            console.log("blob size", blob.size)
+            console.log("blob text", blob.text)
+            // blobs_recorded = [];
+            // let videoURL = window.URL.createObjectURL(blob);
+            // console.log("blob recorded", blobs_recorded)
+
             media_recorder.stop();
-            window.location.replace("{% url 'home' %}");
+            // window.location.replace("{% url 'home' %}");
           }
           interval = setInterval(updateCountdown, 1000);
+          console.log("hello,", blob.size)
+          console.log("my blob is ", blob, blob.size, blob.text, blob.type)
+          // console.log(blobs_recorded)
       }, false);
 </script>
  
