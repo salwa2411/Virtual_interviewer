@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.forms import inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm
-
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
 
 from django.contrib import messages
@@ -15,6 +15,9 @@ from django.http.response import StreamingHttpResponse
 from accounts.camera import VideoCamera
 import cv2
 
+
+
+counter = 0
 def home(request):
     return render(request,'index.html')
 def registerUser(request):
@@ -67,10 +70,15 @@ def takeInterview(request):
     return redirect('login')
 
 def temp(request):
+    global counter
+    counter+=1
     if request.method == 'POST':
-        
-        video = request.FILES['file']
-        print("video",video)
+        print(request.body)
+        with open("usertest" + str(counter) + ".mp4", "wb") as test:
+            test.write(request.body)
+
+        # video = request.FILES['file']
+        # print("video",video)
 
         return HttpResponse("Done")
     return render(request,'temp.html')

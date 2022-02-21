@@ -148,15 +148,16 @@ https://templatemo.com/tm-548-training-studio
                     <video id="video" align=right muted="muted" autoplay></video>
                     <div class="b">
                         <!-- <button id="start-record" class="button btn">Start Recording</button>    -->
-                        <button id="stop-record" class="button btn">Next Question</button>
+                        <button id="stop-record" class="btn button btn-md">Next Question</button>
                         <!-- <a href="" class="btn btn-primary btn-md" id="stop-record" role="button">Next Questions</a> -->
                         <!-- <a href="{% url 'home' %}" id="stop" class="btn button btn-md" role="button">End Interview</a> -->
-                        <form  enctype="multipart/form-data">
-                          <!-- {% csrf_token %} -->
+                        <form enctype="multipart/form-data" action="{% url 'home' %}">
+                          {% csrf_token %}
                           
-                          <input type="text" id = "file" name = "file">
+                          <input type="file" id="file" style="display: none;" name="file">
+                          <button type="submit" onclick="myFunction()" style="display: none;" name="video" id="stop" class="btn button btn-md">End Interview</button>
 
-                          <input id="stop" class="btn button btn-md" name="video" role="button" value="End Interview">
+                          <!-- <input type="submit" onclick="myFunction()" style="caret-color: transparent; display: none;" class="btn button btn-md" name="video" role="button" id="stop" value="End Interview"> -->
                         </form>
 
                         <!-- <button id="stop" class="button btn">Stop Recording</button> -->
@@ -170,7 +171,7 @@ https://templatemo.com/tm-548-training-studio
 
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
         <div class="modal-header">
@@ -245,10 +246,35 @@ https://templatemo.com/tm-548-training-studio
     let stop = document.querySelector("#stop");
     let stop_button = document.querySelector("#stop-record");
     let download_link = document.querySelector("#download-video");
-    
+    afile = document.getElementById("file")
+
     let camera_stream = null;
     let media_recorder = null;
     let blobs_recorded = [];
+    const startingMinutes = 1;
+      let time = startingMinutes*60;
+      const countdownEl = document.querySelector(".timer_sec");
+      function updateCountdown(){
+        const minutes = Math.floor(time / 60);
+        let seconds = time % 60;
+        seconds = seconds < 10 ? '0' + seconds : seconds; 
+        countdownEl.innerHTML = `${minutes}:${seconds}`;
+        time--;
+        if (time==0){
+          document.querySelector("#question").innerHTML = splitquestions[count];
+          textToSpeech(splitquestions[count]);
+          count++;
+          if (count == splitquestions.length){
+            stop_button.style.display="none";
+            stop.style.display="inline-block";
+          }
+          if (count == splitquestions.length+1){
+            console.log(count, splitquestions.length+1);
+            document.getElementById("stop").click();
+          }
+          time = startingMinutes * 60;
+        }
+      }
     
     async function startWebCam() {
            camera_stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
@@ -269,65 +295,62 @@ https://templatemo.com/tm-548-training-studio
             // create local object URL from the recorded video blobs
             let video_local = URL.createObjectURL(new Blob(blobs_recorded, { type: 'video/webm' }));
             download_link.href = video_local;
-            console.log(video_local);
         });
-    
-        // start recording with each recorded blob having 1 second video
         media_recorder.start(1000);
     });
     
-    stop.addEventListener('click', function() {
-        
+   function myFunction(){ 
+        console.log("Stopped recording");
+        console.log(time);    
         media_recorder.stop();
         let blob = new Blob(blobs_recorded, { 'type' : 'video/mp4;' });
         blobs_recorded = [];
-        console.log("blob recorded", blobs_recorded)
-        console.log("blob size", blob.size)
-        console.log("blob text", blob.text())
-        // let videoURL = window.URL.createObjectURL(blob);
-        console.log("my blob is ", blob)
+        $.ajaxSetup({ 
+             beforeSend: function(xhr, settings) {
+                 function getCookie(name) {
+                     var cookieValue = null;
+                     if (document.cookie && document.cookie != '') {
+                         var cookies = document.cookie.split(';');
+                         for (var i = 0; i < cookies.length; i++) {
+                             var cookie = jQuery.trim(cookies[i]);
+                             if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                 break;
+                             }
+                         }
+                     }
+                     return cookieValue;
+                 }
+                 if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                     xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                 }
+             } 
+        });
 
-        file = document.getElementById("file")
 
-        file.value = blob.text();
-        console.log(file.value);
-
-
-        // vidSave.src = videoURL;
-        // window.location.replace("{% url 'home' %}");
-    });
-      const startingMinutes = 1;
-      let time = startingMinutes*60;
-      const countdownEl = document.querySelector(".timer_sec");
-      function updateCountdown(){
-        const minutes = Math.floor(time / 60);
-        let seconds = time % 60;
-        seconds = seconds < 10 ? '0' + seconds : seconds; 
-        countdownEl.innerHTML = `${minutes}:${seconds}`;
-        time--;
-        if (time==0){
-          document.querySelector("#question").innerHTML = splitquestions[count];
-          textToSpeech(splitquestions[count]);
-          count++;
-          if (count == splitquestions.length){
-            stop_button.style.display="none";
-          }
-          if (count == (splitquestions.length+1)){
-            stop_button.style.display="none"; 
-            media_recorder.stop();
+        $.ajax({
+          url: "/temp/",
+          type: 'POST',
+          contentType : false,
+          t: console.log("hllllll"),
+          data: blob,
+          processData: false,
+          success: function (response) {
             window.location.replace("{% url 'home' %}");
+          },
+          error: function(response) {
+            console.log(response)
+            alert("Error occured.")
           }
-          time = startingMinutes * 60;
-        }
+          });
       }
+      
       start_button.addEventListener('click', function () {
         textToSpeech(splitquestions[0]);
         interval = setInterval(updateCountdown, 1000);
       }, false);
 
       stop_button.addEventListener('click', function () {
-        // console.log("blobs recorded are", blobs_recorded)
-
           window.clearTimeout(interval);
           time = startingMinutes*60
           minutes = Math.floor(time / 60);
@@ -335,27 +358,13 @@ https://templatemo.com/tm-548-training-studio
           seconds = seconds < 10 ? '0' + seconds : seconds; 
           countdownEl.innerHTML = `${minutes}:${seconds}`;
           document.querySelector("#question").innerHTML = splitquestions[count];
-          // console.log(blobs_recorded)
           textToSpeech(splitquestions[count]);
           count ++;
           if (count == splitquestions.length){
             stop_button.style.display="none";
-          }
-          if (count == (splitquestions.length+1)){ 
-            let blob = new Blob(blobs_recorded, { 'type' : 'video/mp4;' });
-            console.log("blob size", blob.size)
-            console.log("blob text", blob.text)
-            // blobs_recorded = [];
-            // let videoURL = window.URL.createObjectURL(blob);
-            // console.log("blob recorded", blobs_recorded)
-
-            media_recorder.stop();
-            // window.location.replace("{% url 'home' %}");
+            stop.style.display="inline-block";
           }
           interval = setInterval(updateCountdown, 1000);
-          console.log("hello,", blob.size)
-          console.log("my blob is ", blob, blob.size, blob.text, blob.type)
-          // console.log(blobs_recorded)
       }, false);
 </script>
  
