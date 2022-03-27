@@ -1,0 +1,440 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" rel="stylesheet">
+
+    <title>Virtual Interviewer</title>
+<!--
+
+TemplateMo 548 Training Studio
+
+https://templatemo.com/tm-548-training-studio
+
+-->
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/font-awesome.css' %}">
+
+    <link rel="stylesheet" href="{% static 'assets/css/templatemo-training-studio.css' %}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Interview</title>
+  </head>
+  <body>
+        <!-- ***** Preloader Start ***** -->
+    <div id="js-preloader" class="js-preloader">
+        <div class="preloader-inner">
+          <span class="dot"></span>
+          <div class="dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+      <!-- ***** Preloader End ***** -->
+      <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <a href="{% url 'home' %}" class="logo">Virtual<em> Interviewer</em></a>
+                        <ul class="nav">
+                            {% comment %} <li class="main-button"> <a href="#" >{{user.username}}</a> </li> {% endcomment %}
+                            <h3 style="color:white;"> {{user.username}} </h3> 
+                        </ul>    
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
+    <style type="text/css">
+        * {
+          box-sizing: border-box;
+        }
+
+        /* Create two equal columns that floats next to each other */
+        .column {
+          float: left;
+          width: 50%;
+          padding: 5px;
+          height: 300px; /* Should be removed. Only for demonstration */
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+          content: "";
+          display: table;
+          clear: both;
+          vertical-align: top;
+        }
+
+        @media screen and (max-width: 600px) {
+          .column {
+            width: 100%;
+          }
+        }
+        .timer{
+          display: flex;
+          align-items: center;
+          float: right;
+          margin-top: 2%;
+          margin-right: 1%;
+          justify-content: space-between;
+          width: 145px;
+          height: 45px;
+          background: white;
+          border: 1px solid #b8daff;
+          border-radius: 5px;
+          padding: 0 8px;
+        }
+        .timer .time-text{
+          font-weight: 400;
+          font-size: 17px;
+          user-select: none;
+        }
+        .timer .timer_sec{
+          font-size: 18px;
+          font-weight: 500;
+          background: #343a40;
+          height: 30px;
+          width: 45px;
+          color: #fff;
+          text-align: center;
+          line-height: 30px;
+          border-radius: 5px;
+          border: 1px solid #343a40;
+          user-select: none;
+        }
+        .btn{
+          display: inline-block;
+        }
+
+    </style>
+    <div class="main-banner" id="top">
+        <img src ="{% static 'assets/images/myvi5.jpg'%}" id="bg-video"/>
+        <div class="video-overlay header-text">
+          <div class="timer">
+            <div class="time-text">Time left</div>
+            <div class="timer_sec">35</div>
+          </div>
+            <div class="caption">
+                <div class="row">
+                  <div class="column" style="background-color:#fff; height: 480px;">
+                    <h3><font face="Ariel" size="5px" color="#808080">Interview questions</font></h3>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                  
+                    <p id="question" style ="font-family:Ariel; font-size:50px; color:#000;">{{ questions.0 }}</p>
+                  </div>
+                  <div class="column" style="padding-top: 0;">
+                    <video id="video" align=right muted="muted" autoplay></video>
+                    <div class="b">
+                        <!-- <button id="start-record" class="button btn">Start Recording</button>    -->
+                        <!-- <button id="stop-record" class="button btn">Next Question</button> -->
+                        <!-- <a href="" class="btn btn-primary btn-md" id="stop-record" role="button">Next Questions</a> -->
+                        <!-- <a href="{% url 'home' %}" id="stop" class="btn button btn-md" role="button">End Interview</a> -->
+                        <form  enctype="multipart/form-data">
+                          {% csrf_token %}
+                          
+                          <input style="display: none;" type="file" id="file" name="file">
+
+                          <input id="stop" type="button" style="display: none;" class="btn button btn-md" name="video" role="button" value="End Interview">
+                        </form>
+                        <!-- <button id="stop" class="button btn">Stop Recording</button> -->
+                        <!-- <a id="download-video" download="test.mp4">Download Video</a> -->
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Instructions</h5>
+            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+            <!-- <span aria-hidden="true">&times;</span> -->
+            <!-- </button> -->
+        </div>
+        <div class="modal-body">
+          <!-- <h1 style="text-align: center;">Hello, world!</h1> -->
+          <ul>
+            <li>To start the Interview you have to click on the start button.</li>
+            <li>An access to the webcam and microphone would be required.</li>
+            <li>Press allow and the webcam would be turned on.</li>
+            <li>The interview would be recorded.</li>
+            <li>On click of start button a timer will start on the top right corner.</li>
+            <li>The count down of 5 seconds on the main interview screen.</li>
+            <li>Each question would be having a alotted time for you to answer.</li>
+            <li>Make sure you are in a room with least noise.</li>
+            <li>Questions won't be repeated by the interviewer.</li>
+            <li>Once the questions are over your interview will stop.</li>
+            <li>Your report would be send to you soon.</li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+            <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+            <button type="button" id="start-record" class="button" data-dismiss="modal">Start Interview</button>
+            <style>
+            .button {
+                background-color: #58a5f0;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+            }
+            </style>
+            
+        </div>
+        </div>
+    </div>
+    </div>
+
+    <script type="text/javascript">
+    var txtInput = document.querySelector("#question");
+    let synth = speechSynthesis;
+    isSpeaking = true;
+    function textToSpeech(text){
+      let utterance = new SpeechSynthesisUtterance(text);
+      for(let voice of synth.getVoices()){
+              utterance.voice = voice;
+              break;
+      }
+      synth.speak(utterance);
+    }
+    var a = "{{ questions }}";
+    a = a.replace("[", "");
+    a = a.replace("]", "");
+    substring = (a.match(/&#x27;/g) || []).length;
+    for (let i=0; i<substring; i++){
+      a = a.replace("&#x27;", "");
+    }
+    var splitquestions = a.split(",");
+    var count = 1;
+    let camera_button = document.querySelector("#start-camera");
+    let video = document.querySelector("#video");
+    let start_button = document.querySelector("#start-record");
+    let stop = document.querySelector("#stop");
+    let stop_button = document.querySelector("#stop-record");
+    let download_link = document.querySelector("#download-video");
+    
+    let camera_stream = null;
+    let media_recorder = null;
+    let blobs_recorded = [];
+    
+    async function startWebCam() {
+        camera_stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        video.srcObject = camera_stream;
+    }
+    startWebCam();
+    start_button.addEventListener('click', function() {
+        // set MIME type of recording as video/webm
+        media_recorder = new MediaRecorder(camera_stream, { mimeType: 'video/webm' });
+    
+        // event : new recorded video blob available 
+        media_recorder.addEventListener('dataavailable', function(e) {
+            blobs_recorded.push(e.data);
+        });
+    
+        // event : recording stopped & all blobs sent
+        media_recorder.addEventListener('stop', function() {
+            // create local object URL from the recorded video blobs
+            let video_local = URL.createObjectURL(new Blob(blobs_recorded, { type: 'video/webm' }));
+            download_link.href = video_local;
+            console.log(video_local);
+        });
+    
+        // start recording with each recorded blob having 1 second video
+        media_recorder.start(1000);
+    });
+    
+    stop.addEventListener('click', function() {
+        
+        media_recorder.stop();
+        let blob = new Blob(blobs_recorded, { 'type' : 'video/mp4;' });
+        blobs_recorded = [];
+        // let videoURL = window.URL.createObjectURL(blob);
+        console.log("my blob is ", blob)
+
+        file = document.getElementById("file")
+
+        // file.value = blob.text();
+        // console.log(file.value);
+        // h = {{ csrf_token }}
+        // console.log(h)
+        $.ajaxSetup({ 
+             beforeSend: function(xhr, settings) {
+                 function getCookie(name) {
+                     var cookieValue = null;
+                     if (document.cookie && document.cookie != '') {
+                         var cookies = document.cookie.split(';');
+                         for (var i = 0; i < cookies.length; i++) {
+                             var cookie = jQuery.trim(cookies[i]);
+                             // Does this cookie string begin with the name we want?
+                             if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                 break;
+                             }
+                         }
+                     }
+                     return cookieValue;
+                 }
+                 if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                     // Only send the token to relative URLs i.e. locally.
+                     xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                 }
+             } 
+        });
+
+
+        $.ajax({
+          url: "/temp/",
+          type: 'POST',
+          contentType : false,
+          t: console.log("hllllll"),
+          data: blob,
+          processData: false,
+          success: function (response) {
+            alert("Thank You for giving this interview!!")
+            // location.reload();
+            window.location.replace("{% url 'home' %}");
+          },
+          error: function(response) {
+            console.log(response)
+            alert("Error occured.")
+          }
+          });
+
+          console.log("After ajax")
+        // vidSave.src = videoURL;
+        // window.location.replace("{% url 'home' %}");
+    });
+      // const startingMinutes = 1;
+      // let time = startingMinutes*60;
+      let time = 35
+      const countdownEl = document.querySelector(".timer_sec");
+      function updateCountdown(){
+        const minutes = Math.floor(time / 60);
+        let seconds = time % 60;
+        seconds = seconds < 10 ? '0' + seconds : seconds; 
+        // countdownEl.innerHTML = `${minutes}:${seconds}`;
+        countdownEl.innerHTML = `${seconds}`;
+        time--;
+        if (time==-1){
+          document.querySelector("#question").innerHTML = splitquestions[count];
+          textToSpeech(splitquestions[count]);
+          count++;
+          // if (count == splitquestions.length){
+          //   // stop_button.style.display="none";
+          //   stop.style.display="inline-block";
+          // }
+          if (count == (splitquestions.length+1)){
+            // stop_button.style.display="none";
+            // stop.style.display="inline-block";
+            // stop.style.display="none";
+            stop.click();
+            document.getElementById("question").innerHTML = "Please Wait for some time you will be redirected soon....." ;
+            clearInterval(interval);
+            // window.location.replace("{% url 'home' %}");
+
+          }
+          // time = startingMinutes * 60;
+          time = 35;
+        }
+      }
+      start_button.addEventListener('click', function () {
+        textToSpeech(splitquestions[0]);
+        interval = setInterval(updateCountdown, 1000);
+      }, false);
+
+      // stop_button.addEventListener('click', function () {
+      //   // console.log("blobs recorded are", blobs_recorded)
+      //     window.clearTimeout(interval);
+      //     time = startingMinutes*60;
+      //     minutes = Math.floor(time / 60);
+      //     seconds = time % 60;
+      //     seconds = seconds < 10 ? '0' + seconds : seconds; 
+      //     countdownEl.innerHTML = `${minutes}:${seconds}`;
+      //     document.querySelector("#question").innerHTML = splitquestions[count];
+      //     // console.log(blobs_recorded)
+      //     textToSpeech(splitquestions[count]);
+      //     count ++;
+      //     if (count == splitquestions.length){
+      //       stop_button.style.display="none";
+      //       stop.style.display="inline-block";
+      //     }
+      //     if (count == (splitquestions.length+1)){ 
+      //       let blob = new Blob(blobs_recorded, { 'type' : 'video/mp4;' });
+      //       console.log("blob size", blob.size)
+      //       console.log("blob text", blob.text)
+      //       stop.style.display="inline-block";
+      //       document.getElementById("question").innerHTML = "Click on End Interview Button to end your Interview...." ;
+      //       clearInterval(interval);
+      //       // blobs_recorded = [];
+      //       // let videoURL = window.URL.createObjectURL(blob);
+      //       // console.log("blob recorded", blobs_recorded)
+      //       // window.location.replace("{% url 'home' %}");
+      //     }
+      //     interval = setInterval(updateCountdown, 1000);
+      //     console.log("hello,", blob.size)
+      //     console.log("my blob is ", blob, blob.size, blob.text, blob.type)
+      //     // console.log(blobs_recorded)
+      // }, false);
+</script>
+ 
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script>
+       $(document).ready(function(){
+            $('#exampleModal').modal('show');
+        }); 
+    </script>
+      <!-- jQuery -->
+      <script src="{% static 'assets/js/jquery-2.1.0.min.js'%}"></script>
+
+      <!-- Bootstrap -->
+      <script src="{% static 'assets/js/popper.js'%}"></script>
+      <script src="{% static 'assets/js/bootstrap.min.js'%}"></script>
+  
+      <!-- Plugins -->
+      <script src="{% static 'assets/js/scrollreveal.min.js'%}"></script>
+      <script src="{% static 'assets/js/waypoints.min.js'%}"></script>
+      <script src="{% static 'assets/js/jquery.counterup.min.js'%}"></script>
+      <script src="{% static 'assets/js/imgfix.min.js'%}"></script> 
+      <script src="{% static 'assets/js/mixitup.js'%}"></script> 
+      <script src="{% static 'assets/js/accordions.js'%}"></script>
+      
+      <!-- Global Init -->
+      <script src="{% static 'assets/js/custom.js'%}"></script>
+  </body>
+</html>
