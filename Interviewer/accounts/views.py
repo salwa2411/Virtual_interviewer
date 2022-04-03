@@ -69,6 +69,11 @@ def takeInterview(request):
         return render(request,'interview.html', {'questions': questions})
     return redirect('login')
 
+def profile(request):
+    if request.user.is_authenticated:
+        return render(request,'profile.html')
+    return redirect('login')
+    
 def temp(request):
     global counter
     counter+=1
