@@ -12,13 +12,20 @@ from django.contrib.auth.decorators import login_required
 from .forms import CreateUserForm
 
 from django.http.response import StreamingHttpResponse
-from accounts.camera import VideoCamera
+# from accounts.camera import VideoCamera
 import cv2
+# from . import queue
+import os
 
+from . import analysis
+from . import data_queue
+from . import audio_analysis
+from . import audio_emotion
 
 
 counter = 0
 def home(request):
+
     return render(request,'index.html')
 def registerUser(request):
     if request.user.is_authenticated:
@@ -72,13 +79,30 @@ def takeInterview(request):
 def temp(request):
     global counter
     counter+=1
+    path = os.getcwd() +r"\media\\"
+    username = request.user.username
     if request.method == 'POST':
         print(request.body)
-        with open("usertest" + str(counter) + ".mp4", "wb") as test:
+
+        with open(f"{path}"+f"{username}" + str(counter) + ".mp4", "wb") as test:
             test.write(request.body)
 
         # video = request.FILES['file']
-        # print("video",video)
+        data_queue.path.append((username+str(counter),path+username+str(counter)+".mp4"))
+        print(data_queue.path)
+        audio_analysis.process_audio(data_queue.path,path)
+        # model_dir = path + "static\\model\\testing10_model.h5"
+        # print("model dir",model_dir)
+        model_loaded=audio_emotion.livePredictions()
+
+        audio_file_path =path+"audioData"
+        files = os.listdir(audio_file_path)
+
+        for file in files:
+            model_loaded.makepredictions(audio_file_path+"\\"+file)
+            
+        analysis.analyze(data_queue.path)
+        print(data_queue.path)
 
         return HttpResponse("Done")
     return render(request,'temp.html')
