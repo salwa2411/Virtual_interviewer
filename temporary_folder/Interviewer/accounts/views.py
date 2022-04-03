@@ -107,6 +107,10 @@ def temp(request):
         return HttpResponse("Done")
     return render(request,'temp.html')
 
+def profile(request):
+    if request.user.is_authenticated:
+        return render(request,'profile.html')
+    return redirect('login')
 
 '''
 def gen(camera):
