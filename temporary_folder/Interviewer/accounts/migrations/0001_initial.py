@@ -14,7 +14,6 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Profile',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('date', models.DateField()),
                 ('facial_expressions', models.CharField(max_length=50)),
                 ('audio_analysis', models.CharField(max_length=50)),
