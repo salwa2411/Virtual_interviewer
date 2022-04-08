@@ -1,4 +1,3 @@
-
 import cv2
 from deepface import DeepFace
 import json
@@ -18,12 +17,12 @@ def analyze(queue):
         flag = True
         f = open("emotions.txt", "w")
         count =0
-        di ={"happy":0, "sad":0, "angry":0, "neutral":0, "surprise":0, "fear":0}
+        di ={"happy":0, "sad":0, "angry":0, "neutral":0, "surprise":0, "fear":0, "disgust":0}
         while flag:
             ret, frame = cap.read()
-            print(ret)
-            print(count)
-            if ret :
+            # print(ret)
+            # print(count)
+            if ret:
                 if count %8 ==0:
                     result = DeepFace.analyze(frame, actions = ['emotion'], enforce_detection=False)
                     f.write(result['dominant_emotion'])

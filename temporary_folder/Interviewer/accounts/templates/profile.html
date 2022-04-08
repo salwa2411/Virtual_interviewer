@@ -96,29 +96,19 @@ https://templatemo.com/tm-548-training-studio
                         <th scope="col">Accuracy</th>
                       </tr>
                     </thead>
+                    {% if data %}
+                    {% for d in data %}
                     <tbody>
                       <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                        <td>@mdo</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
-                        <td>@mdo</td>
+                        <th scope="row">{{ d.id }}</th>
+                        <td>{{ d.date }}</td>
+                        <td>{{ d.facial_expressions }}</td>
+                        <td>{{ d.audio_analysis }}</td>
+                        <td>{{ d.accuracy }}</td>
                       </tr>
                     </tbody>
+                    {% endfor %}
+                    {% endif %}
                   </table>
                 
                 <!-- <div class="main-button scroll-to-section">
