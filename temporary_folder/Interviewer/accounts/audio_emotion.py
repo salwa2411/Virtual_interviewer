@@ -4,7 +4,7 @@ import librosa
 import os
 class livePredictions:
 
-    def __init__(self, path=r"C:\Users\hp\Downloads\Virtual_interviewer-main\temporary_folder\Interviewer\static\model\testing10_model.h5"):
+    def __init__(self, path=r"..\Interviewer\static\model\testing10_model.h5"):
         self.path = path
         # self.file = file
         print("loading Model ...")
@@ -25,7 +25,7 @@ class livePredictions:
         predictions = np.argmax(self.loaded_model.predict(x), axis=-1)
         # print("Prediction is", " ", self.convertclasstoemotion(predictions))
         pred = self.convertclasstoemotion(predictions)
-        print(pred)
+        # print(pred)
         return pred
 
     @staticmethod

@@ -19,7 +19,7 @@ def process_audio(path,rel_path):
 		chunks = make_chunks(myaudio,chunk_length_ms) #Make chunks of one sec 
 		for idx, chunk in enumerate(chunks): 
 			chunk_name = f'{destin_path}' + f"{path[i][0]}" + "_{0}.wav".format(idx) 
-			print ("exporting", chunk_name) 
+			# print ("exporting", chunk_name) 
 			chunk.export(chunk_name, format="wav") 
 		i +=1
 

@@ -5,7 +5,7 @@ import json
 def analyze(queue):
     temp = []
     res = {}
-    while len(queue) >0:
+    while len(queue) > 0:
 
         # if len(queue)>0 :
 

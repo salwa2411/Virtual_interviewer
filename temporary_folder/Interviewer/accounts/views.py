@@ -6,7 +6,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
 
 from django.contrib import messages
-
 from django.contrib.auth.decorators import login_required
 
 from .forms import CreateUserForm
@@ -101,23 +100,20 @@ def temp(request):
 
         audio_file_path =path+"audioData"
         files = os.listdir(audio_file_path)
-        final_emotions = {}
+        final_emotions = {"neutral": 0, "calm": 0, "happy": 0, "sad": 0, "angry": 0, "fearful": 0, "disgust": 0, "surprised": 0}
         for file in files:
             emotions = model_loaded.makepredictions(audio_file_path+"\\"+file)
-            if emotions in final_emotions:
-                final_emotions[emotions] += 1
-            else:
-                final_emotions[emotions] = 1
+            final_emotions[emotions] += 1
         dir = "../Interviewer/media/audioData/"
         for f in os.listdir(dir):
             os.remove(os.path.join(dir, f))
         total = sum(final_emotions.values())
         average = total//len(final_emotions)
-        minimum_diff = float("inf")
-        emotion = emotions
+        maximum_diff = float("-inf")
+        emotion = None
         for key in final_emotions:
-            if abs(final_emotions[key] - average) < minimum_diff:
-                minimum_diff = abs(final_emotions[key] - average)
+            if abs(final_emotions[key] - average) > maximum_diff and final_emotions[key] > 0:
+                maximum_diff = abs(final_emotions[key] - average)
                 emotion = key
         audioEmotion = emotion
 
@@ -126,25 +122,27 @@ def temp(request):
         with open('result.json') as json_data:
             data = json.load(json_data)
         length = len(data)
-        for i in range(1, length+1):
-            curr_user = request.user.username+str(i)
-            face_emotion = data[curr_user]
-            min_diff = float("inf")
+        for key in data:
+            # curr_user = request.user.username+str(i)
+            face_emotion = data[key]
+            max_diff = float("-inf")
             summ = sum(face_emotion.values())
             avg = summ//len(face_emotion)
             emt = None
             for i in face_emotion:
-                if abs(face_emotion[i] - avg) < min_diff:
-                    min_diff = abs(face_emotion[i] - avg)
+                if abs(face_emotion[i] - avg) > max_diff and face_emotion[i] > 0:
+                    max_diff = abs(face_emotion[i] - avg)
                     emt = i
-
 
             profile_instance = Profile()
             profile_instance.user_id = request.user
             profile_instance.date = datetime.datetime.now()
-            profile_instance.facial_expressions = emt
-            profile_instance.audio_analysis = audioEmotion
-            profile_instance.accuracy = "98"
+            profile_instance.facial_expressions_keys = list(face_emotion.keys())
+            profile_instance.facial_expressions_values = list(face_emotion.values())
+            profile_instance.audio_analysis_keys = list(final_emotions.keys())
+            profile_instance.audio_analysis_values = list(final_emotions.values())
+            profile_instance.average_face_emotions = emt
+            profile_instance.average_audio_emotions = audioEmotion
             profile_instance.save()
         # print(data_queue.path)
 
@@ -153,10 +151,20 @@ def temp(request):
 
 def profile(request):
     if request.user.is_authenticated:
-        context = {
-        'data': Profile.objects.filter(user_id=request.user)
-        }
-        return render(request,'profile.html', context)
+        # data1 = Profile.objects.filter(user_id=request.user).last().facial_expressions_keys
+        # data1 = data1.strip('][').split(', ')
+        data2 = Profile.objects.filter(user_id=request.user).last().facial_expressions_values
+        data2 = data2.strip('][').split(', ')
+        data2 = list(map(int, data2))
+        # data3 = Profile.objects.filter(user_id=request.user).last().audio_analysis_keys
+        # data3 = data3.strip('][').split(', ')
+        data4 = Profile.objects.filter(user_id=request.user).last().audio_analysis_values
+        data4 = data4.strip('][').split(', ')
+        data4 = list(map(int, data4))
+        data5 = Profile.objects.filter(user_id=request.user).last().average_face_emotions
+        data6 = Profile.objects.filter(user_id=request.user).last().average_audio_emotions
+        data = Profile.objects.filter(user_id=request.user).order_by('id').reverse()
+        return render(request,'profile.html', {'data2': data2, 'data4': data4, 'avg_face': data5, 'avg_audio': data6, 'data': data})
     return redirect('login')
 '''
 def gen(camera):

@@ -56,6 +56,10 @@ https://templatemo.com/tm-548-training-studio
                         <a class='menu-trigger'>
                             <span>Menu</span>
                         </a>
+                        <div class="timer">
+                          <div class="time-text">Time left</div>
+                          <div class="timer_sec">20</div>
+                        </div>
                     </nav>
                 </div>
             </div>
@@ -128,10 +132,7 @@ https://templatemo.com/tm-548-training-studio
     <div class="main-banner" id="top">
         <img src ="{% static 'assets/images/myvi5.jpg'%}" id="bg-video"/>
         <div class="video-overlay header-text">
-          <div class="timer">
-            <div class="time-text">Time left</div>
-            <div class="timer_sec">05</div>
-          </div>
+          <div class="container">
             <div class="caption">
                 <div class="row">
                   <div class="column" style="background-color:#fff; height: 480px;">
@@ -142,7 +143,7 @@ https://templatemo.com/tm-548-training-studio
                     <br>
                     <br>
                   
-                    <p id="question" style ="font-family:Ariel; font-size:50px; color:#000;">{{ questions.0 }}</p>
+                    <p id="question" style ="font-family:Ariel; font-size:49px; color:#000;">{{ questions.0 }}</p>
                   </div>
                   <div class="column" style="padding-top: 0;">
                     <video id="video" align=right muted="muted" autoplay></video>
@@ -164,6 +165,7 @@ https://templatemo.com/tm-548-training-studio
                   </div>
                 </div>
             </div>
+          </div>
         </div>
     </div>
 
@@ -338,7 +340,7 @@ https://templatemo.com/tm-548-training-studio
     });
       // const startingMinutes = 1;
       // let time = startingMinutes*60;
-      let time = 5 ;
+      let time = 20 ;
       const countdownEl = document.querySelector(".timer_sec");
       function updateCountdown(){
         const minutes = Math.floor(time / 60);
@@ -351,22 +353,13 @@ https://templatemo.com/tm-548-training-studio
           document.querySelector("#question").innerHTML = splitquestions[count];
           textToSpeech(splitquestions[count]);
           count++;
-          // if (count == splitquestions.length){
-          //   // stop_button.style.display="none";
-          //   stop.style.display="inline-block";
-          // }
           if (count == (splitquestions.length+1)){
-            // stop_button.style.display="none";
-            // stop.style.display="inline-block";
-            // stop.style.display="none";
             stop.click();
             document.getElementById("question").innerHTML = "Please Wait for some time you will be redirected soon....." ;
             clearInterval(interval);
-            // window.location.replace("{% url 'home' %}");
-
           }
           // time = startingMinutes * 60;
-          time = 5;
+          time = 20;
         }
       }
       start_button.addEventListener('click', function () {
