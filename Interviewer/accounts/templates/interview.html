@@ -258,7 +258,15 @@ https://templatemo.com/tm-548-training-studio
     startWebCam();
     start_button.addEventListener('click', function() {
         // set MIME type of recording as video/webm
+        try{
+          console.log("hello world")
         media_recorder = new MediaRecorder(camera_stream, { mimeType: 'video/webm' });
+        }
+        catch(err){
+          console.log(err)
+          // alert("Please allow the permission for camera and microphones..");
+          // location.reload()
+        }
     
         // event : new recorded video blob available 
         media_recorder.addEventListener('dataavailable', function(e) {

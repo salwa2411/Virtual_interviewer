@@ -25,7 +25,7 @@ SECRET_KEY = 'v3($7t3jc1a7g&hnhy^c#e!t*o2x2^b&@*!4f_ro^=1tzu&5#9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*', ]
 DATA_UPLOAD_MAX_MEMORY_SIZE = None
 
 # Application definition

@@ -4,17 +4,11 @@ import librosa
 import os
 class livePredictions:
 
-    def __init__(self, path=r"..\Interviewer\static\model\testing10_model.h5"):
+    def __init__(self, path=r"../Interviewer/static/model/testing10_model.h5"):
         self.path = path
         # self.file = file
         print("loading Model ...")
         self.loaded_model =load_model(self.path)
-        # print(self.loaded_model.summary())
-
-
-    # def load_model(self):
-    #     self.loaded_model = keras.models.load_model(self.path)
-    #     return self.loaded_model.summary()
 
     def makepredictions(self,file):
         data, sampling_rate = librosa.load(file)
@@ -43,12 +37,3 @@ class livePredictions:
             if int(key) == pred:
                 label = value
         return label
-
-# pred = livePredictions()
-# path='testing10_model.h5',file='angry.wav'
-# pred.load_model()
-# (?# file_path =r"E:\Project-Testing\Virtual_interviewer\temporary_folder\Interviewer\media\audioData")
-# files = os.listdir(file_path)
-
-# for file in files:
-#     pred.makepredictions(file_path+"\\"+file)

@@ -19,16 +19,5 @@ def process_audio(path,rel_path):
 		chunks = make_chunks(myaudio,chunk_length_ms) #Make chunks of one sec 
 		for idx, chunk in enumerate(chunks): 
 			chunk_name = f'{destin_path}' + f"{path[i][0]}" + "_{0}.wav".format(idx) 
-			# print ("exporting", chunk_name) 
 			chunk.export(chunk_name, format="wav") 
 		i +=1
-
-# all_file_names = os.listdir()
-# try:
-#     os.makedirs('chunked') # creating a folder named chunked
-# except:
-#     pass
-# for each_file in all_file_names:
-#     if ('.wav' in each_file):
-# os.makedirs(r'E:\Project-Testing\Virtual_interviewer\temporary_folder\Interviewer\media\audioData\chunked')
-# process_sudio('usertest2.mp4',r'E:\Project-Testing\Virtual_interviewer\temporary_folder\Interviewer\media\audioData\\')

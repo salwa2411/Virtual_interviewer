@@ -32,6 +32,15 @@ https://templatemo.com/tm-548-training-studio
   </head>
   <body>
         <!-- ***** Preloader Start ***** -->
+        <script type="text/javascript">
+            if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                alert("Please use computer")
+                window.location.replace("{% url 'home' %}");
+            }
+            else{
+                console.log("hello world")
+            }
+        </script>
     <div id="js-preloader" class="js-preloader">
         <div class="preloader-inner">
           <span class="dot"></span>
@@ -91,6 +100,7 @@ https://templatemo.com/tm-548-training-studio
           .column {
             width: 100%;
           }
+
         }
         .timer{
           display: flex;
@@ -176,28 +186,33 @@ https://templatemo.com/tm-548-training-studio
         <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Instructions</h5>
-            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
-            <!-- <span aria-hidden="true">&times;</span> -->
-            <!-- </button> -->
         </div>
         <div class="modal-body">
-          <!-- <h1 style="text-align: center;">Hello, world!</h1> -->
-          <ul>
-            <li>To start the Interview you have to click on the start button.</li>
-            <li>An access to the webcam and microphone would be required.</li>
-            <li>Press allow and the webcam would be turned on.</li>
-            <li>The interview would be recorded.</li>
-            <li>On click of start button a timer will start on the top right corner.</li>
-            <li>The count down of 5 seconds on the main interview screen.</li>
-            <li>Each question would be having a alotted time for you to answer.</li>
-            <li>Make sure you are in a room with least noise.</li>
-            <li>Questions won't be repeated by the interviewer.</li>
-            <li>Once the questions are over your interview will stop.</li>
-            <li>Your report would be send to you soon.</li>
-          </ul>
+            * To start the Interview you have to click on the start button.
+            <br>
+            * An access to the webcam and microphone would be required.
+            <br>
+            * Press allow and the webcam would be turned on.
+            <br>
+            * The interview would be recorded.
+            <br>
+            * On click of start button a timer will start on the top right corner.
+            <br>
+            * Each question would be having a alotted time for you to answer.
+            <br>
+            * Make sure you are in a room with least noise.
+            <br>
+            * Questions won't be repeated by the interviewer.
+            <br>
+            * Use only windows os for giving the interview.
+            <br>
+            * Once the questions are over your interview will stop.
+            <br>
+            * Do not refresh the page while giving your interview.
+            <br>
+            * After completing of your interview you can view your report in profile tab.
         </div>
         <div class="modal-footer">
-            <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
             <button type="button" id="start-record" class="button" data-dismiss="modal">Start Interview</button>
             <style>
             .button {
@@ -258,8 +273,13 @@ https://templatemo.com/tm-548-training-studio
     startWebCam();
     start_button.addEventListener('click', function() {
         // set MIME type of recording as video/webm
+        try{
         media_recorder = new MediaRecorder(camera_stream, { mimeType: 'video/webm' });
-    
+        }
+        catch(err){
+            alert("Please allow permissions to camera and microphones..")
+            location.reload()
+        }
         // event : new recorded video blob available 
         media_recorder.addEventListener('dataavailable', function(e) {
             blobs_recorded.push(e.data);
@@ -282,15 +302,7 @@ https://templatemo.com/tm-548-training-studio
         media_recorder.stop();
         let blob = new Blob(blobs_recorded, { 'type' : 'video/mp4;' });
         blobs_recorded = [];
-        // let videoURL = window.URL.createObjectURL(blob);
-        console.log("my blob is ", blob)
-
         file = document.getElementById("file")
-
-        // file.value = blob.text();
-        // console.log(file.value);
-        // h = {{ csrf_token }}
-        // console.log(h)
         $.ajaxSetup({ 
              beforeSend: function(xhr, settings) {
                  function getCookie(name) {
@@ -335,11 +347,7 @@ https://templatemo.com/tm-548-training-studio
           });
 
           console.log("After ajax")
-        // vidSave.src = videoURL;
-        // window.location.replace("{% url 'home' %}");
     });
-      // const startingMinutes = 1;
-      // let time = startingMinutes*60;
       let time = 20 ;
       const countdownEl = document.querySelector(".timer_sec");
       function updateCountdown(){
@@ -367,39 +375,6 @@ https://templatemo.com/tm-548-training-studio
         interval = setInterval(updateCountdown, 1000);
       }, false);
 
-      // stop_button.addEventListener('click', function () {
-      //   // console.log("blobs recorded are", blobs_recorded)
-      //     window.clearTimeout(interval);
-      //     time = startingMinutes*60;
-      //     minutes = Math.floor(time / 60);
-      //     seconds = time % 60;
-      //     seconds = seconds < 10 ? '0' + seconds : seconds; 
-      //     countdownEl.innerHTML = `${minutes}:${seconds}`;
-      //     document.querySelector("#question").innerHTML = splitquestions[count];
-      //     // console.log(blobs_recorded)
-      //     textToSpeech(splitquestions[count]);
-      //     count ++;
-      //     if (count == splitquestions.length){
-      //       stop_button.style.display="none";
-      //       stop.style.display="inline-block";
-      //     }
-      //     if (count == (splitquestions.length+1)){ 
-      //       let blob = new Blob(blobs_recorded, { 'type' : 'video/mp4;' });
-      //       console.log("blob size", blob.size)
-      //       console.log("blob text", blob.text)
-      //       stop.style.display="inline-block";
-      //       document.getElementById("question").innerHTML = "Click on End Interview Button to end your Interview...." ;
-      //       clearInterval(interval);
-      //       // blobs_recorded = [];
-      //       // let videoURL = window.URL.createObjectURL(blob);
-      //       // console.log("blob recorded", blobs_recorded)
-      //       // window.location.replace("{% url 'home' %}");
-      //     }
-      //     interval = setInterval(updateCountdown, 1000);
-      //     console.log("hello,", blob.size)
-      //     console.log("my blob is ", blob, blob.size, blob.text, blob.type)
-      //     // console.log(blobs_recorded)
-      // }, false);
 </script>
  
     <!-- Optional JavaScript -->

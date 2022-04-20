@@ -47,9 +47,4 @@ def analyze(queue):
         with open("result.json","w") as file :
             json.dump(res,file)
         temp.append((data[0],di))
-
-            
-        # else:
-        #     break
-    # return temp
     
