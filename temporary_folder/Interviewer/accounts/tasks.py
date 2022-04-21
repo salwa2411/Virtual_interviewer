@@ -52,9 +52,9 @@ def anas(username, counter, path, id):
     with open('result.json') as json_data:
         data = json.load(json_data)
         
-    length = len(data)
-    for i in range(1, length+1):
-        curr_user = username+str(i)
+    # length = len(data)
+    for key in data.keys():
+        curr_user = key #username+str(counter)
         face_emotion = data[curr_user]
         min_diff = float("inf")
         summ = sum(face_emotion.values())

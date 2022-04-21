@@ -11,10 +11,10 @@ def process_audio(path,rel_path):
 	j = len(path)
 	while i < j:
 		file_path = path[i][1]
-		destin_path = rel_path +"audioData\\"
-		com1 = f"ffmpeg -i {file_path} {destin_path}\\{path[i][0]}.wav"
+		destin_path = rel_path +"audioData/"
+		com1 = f"ffmpeg -i {file_path} {destin_path}/{path[i][0]}.wav"
 		os.system(com1)
-		myaudio = AudioSegment.from_file(f"{destin_path}\\{path[i][0]}.wav", "wav") 
+		myaudio = AudioSegment.from_file(f"{destin_path}/{path[i][0]}.wav", "wav") 
 		chunk_length_ms = 8000 # pydub calculates in millisec 
 		chunks = make_chunks(myaudio,chunk_length_ms) #Make chunks of one sec 
 		for idx, chunk in enumerate(chunks): 
