@@ -32,6 +32,15 @@ https://templatemo.com/tm-548-training-studio
   </head>
   <body>
         <!-- ***** Preloader Start ***** -->
+        <script type="text/javascript">
+            if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                alert("Please use computer")
+                window.location.replace("{% url 'home' %}");
+            }
+            else{
+                console.log("hello world")
+            }
+        </script>
     <div id="js-preloader" class="js-preloader">
         <div class="preloader-inner">
           <span class="dot"></span>
@@ -56,6 +65,10 @@ https://templatemo.com/tm-548-training-studio
                         <a class='menu-trigger'>
                             <span>Menu</span>
                         </a>
+                        <div class="timer">
+                          <div class="time-text">Time left</div>
+                          <div class="timer_sec">20</div>
+                        </div>
                     </nav>
                 </div>
             </div>
@@ -87,6 +100,7 @@ https://templatemo.com/tm-548-training-studio
           .column {
             width: 100%;
           }
+
         }
         .timer{
           display: flex;
@@ -128,10 +142,7 @@ https://templatemo.com/tm-548-training-studio
     <div class="main-banner" id="top">
         <img src ="{% static 'assets/images/myvi5.jpg'%}" id="bg-video"/>
         <div class="video-overlay header-text">
-          <div class="timer">
-            <div class="time-text">Time left</div>
-            <div class="timer_sec">1:00</div>
-          </div>
+          <div class="container">
             <div class="caption">
                 <div class="row">
                   <div class="column" style="background-color:#fff; height: 480px;">
@@ -142,30 +153,29 @@ https://templatemo.com/tm-548-training-studio
                     <br>
                     <br>
                   
-                    <p id="question" style ="font-family:Ariel; font-size:50px; color:#000;">{{ questions.0 }}</p>
+                    <p id="question" style ="font-family:Ariel; font-size:49px; color:#000;">{{ questions.0 }}</p>
                   </div>
                   <div class="column" style="padding-top: 0;">
                     <video id="video" align=right muted="muted" autoplay></video>
                     <div class="b">
                         <!-- <button id="start-record" class="button btn">Start Recording</button>    -->
-                        <button id="stop-record" class="button btn">Next Question</button>
+                        <!-- <button id="stop-record" class="button btn">Next Question</button> -->
                         <!-- <a href="" class="btn btn-primary btn-md" id="stop-record" role="button">Next Questions</a> -->
                         <!-- <a href="{% url 'home' %}" id="stop" class="btn button btn-md" role="button">End Interview</a> -->
-                        <form  enctype="multipart/form-data" action="{% url 'home' %}">
+                        <form  enctype="multipart/form-data">
                           {% csrf_token %}
                           
                           <input style="display: none;" type="file" id="file" name="file">
 
-                          <input type="submit" style="display: none;" id="stop" class="btn button btn-md" name="video" value="End Interview">
-                          <!-- <button style="display: none;" name="video" id="stop" class="btn button btn-md">End Interview</button> -->
+                          <input id="stop" type="button" style="display: none;" class="btn button btn-md" name="video" role="button" value="End Interview">
                         </form>
-
                         <!-- <button id="stop" class="button btn">Stop Recording</button> -->
                         <!-- <a id="download-video" download="test.mp4">Download Video</a> -->
                     </div>
                   </div>
                 </div>
             </div>
+          </div>
         </div>
     </div>
 
@@ -176,28 +186,33 @@ https://templatemo.com/tm-548-training-studio
         <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Instructions</h5>
-            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
-            <!-- <span aria-hidden="true">&times;</span> -->
-            <!-- </button> -->
         </div>
         <div class="modal-body">
-          <!-- <h1 style="text-align: center;">Hello, world!</h1> -->
-          <ul>
-            <li>To start the Interview you have to click on the start button.</li>
-            <li>An access to the webcam and microphone would be required.</li>
-            <li>Press allow and the webcam would be turned on.</li>
-            <li>The interview would be recorded.</li>
-            <li>On click of start button a timer will start on the top right corner.</li>
-            <li>The count down of 5 seconds on the main interview screen.</li>
-            <li>Each question would be having a alotted time for you to answer.</li>
-            <li>Make sure you are in a room with least noise.</li>
-            <li>Questions won't be repeated by the interviewer.</li>
-            <li>Once the questions are over your interview will stop.</li>
-            <li>Your report would be send to you soon.</li>
-          </ul>
+            * To start the Interview you have to click on the start button.
+            <br>
+            * An access to the webcam and microphone would be required.
+            <br>
+            * Press allow and the webcam would be turned on.
+            <br>
+            * The interview would be recorded.
+            <br>
+            * On click of start button a timer will start on the top right corner.
+            <br>
+            * Each question would be having a alotted time for you to answer.
+            <br>
+            * Make sure you are in a room with least noise.
+            <br>
+            * Questions won't be repeated by the interviewer.
+            <br>
+            * Use only windows os for giving the interview.
+            <br>
+            * Once the questions are over your interview will stop.
+            <br>
+            * Do not refresh the page while giving your interview.
+            <br>
+            * After completing of your interview you can view your report in profile tab.
         </div>
         <div class="modal-footer">
-            <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
             <button type="button" id="start-record" class="button" data-dismiss="modal">Start Interview</button>
             <style>
             .button {
@@ -259,15 +274,12 @@ https://templatemo.com/tm-548-training-studio
     start_button.addEventListener('click', function() {
         // set MIME type of recording as video/webm
         try{
-          console.log("hello world")
         media_recorder = new MediaRecorder(camera_stream, { mimeType: 'video/webm' });
         }
         catch(err){
-          console.log(err)
-          // alert("Please allow the permission for camera and microphones..");
-          // location.reload()
+            alert("Please allow permissions to camera and microphones..")
+            location.reload()
         }
-    
         // event : new recorded video blob available 
         media_recorder.addEventListener('dataavailable', function(e) {
             blobs_recorded.push(e.data);
@@ -290,15 +302,7 @@ https://templatemo.com/tm-548-training-studio
         media_recorder.stop();
         let blob = new Blob(blobs_recorded, { 'type' : 'video/mp4;' });
         blobs_recorded = [];
-        // let videoURL = window.URL.createObjectURL(blob);
-        console.log("my blob is ", blob)
-
         file = document.getElementById("file")
-
-        // file.value = blob.text();
-        // console.log(file.value);
-        // h = {{ csrf_token }}
-        // console.log(h)
         $.ajaxSetup({ 
              beforeSend: function(xhr, settings) {
                  function getCookie(name) {
@@ -328,13 +332,13 @@ https://templatemo.com/tm-548-training-studio
           url: "/temp/",
           type: 'POST',
           contentType : false,
-          t: console.log("hllllll temp"),
+          t: console.log("hllllll"),
           data: blob,
           processData: false,
           success: function (response) {
-            window.location.replace("{% url 'home' %}")
-            console.log("in success")
-            // alert("video saved")
+            alert("Thank You for giving this interview!!")
+            // location.reload();
+            window.location.replace("{% url 'home' %}");
           },
           error: function(response) {
             console.log(response)
@@ -343,44 +347,27 @@ https://templatemo.com/tm-548-training-studio
           });
 
           console.log("After ajax")
-        // vidSave.src = videoURL;
-        // window.location.replace("{% url 'home' %}");
     });
-
-    if (stop.clicked=="true"){
-      stop.style.display="none";
-    }
-    // end of stop function
-      const startingMinutes = 1;
-      let time = startingMinutes*60;
+      let time = 20 ;
       const countdownEl = document.querySelector(".timer_sec");
       function updateCountdown(){
         const minutes = Math.floor(time / 60);
         let seconds = time % 60;
         seconds = seconds < 10 ? '0' + seconds : seconds; 
-        countdownEl.innerHTML = `${minutes}:${seconds}`;
+        // countdownEl.innerHTML = `${minutes}:${seconds}`;
+        countdownEl.innerHTML = `${seconds}`;
         time--;
-        if (time==0){
+        if (time==-1){
           document.querySelector("#question").innerHTML = splitquestions[count];
           textToSpeech(splitquestions[count]);
           count++;
-          if (count == splitquestions.length){
-            stop_button.style.display="none";
-            stop.style.display="inline-block";
-          }
           if (count == (splitquestions.length+1)){
-            // stop_button.style.display="none"; 
-            // media_recorder.stop();
-            // window.location.replace("{% url 'home' %}");
-            // document.querySelector("#question").innerHTML = "please wait for some time you will be redirected soon...";
-            // console.log("in testing documet getElementById", document.getElementById('#question'))
-            document.getElementById("question").innerHTML = "Please wait for some time....."
-            document.getElementsByClassName("timer")[0].style.visibility = "hidden"
             stop.click();
-            stop.style.display="none";
-
+            document.getElementById("question").innerHTML = "Please Wait for some time you will be redirected soon....." ;
+            clearInterval(interval);
           }
-          time = startingMinutes * 60;
+          // time = startingMinutes * 60;
+          time = 20;
         }
       }
       start_button.addEventListener('click', function () {
@@ -388,40 +375,6 @@ https://templatemo.com/tm-548-training-studio
         interval = setInterval(updateCountdown, 1000);
       }, false);
 
-      stop_button.addEventListener('click', function () {
-        // console.log("blobs recorded are", blobs_recorded)
-
-          window.clearTimeout(interval);
-          time = startingMinutes*60
-          minutes = Math.floor(time / 60);
-          seconds = time % 60;
-          seconds = seconds < 10 ? '0' + seconds : seconds; 
-          countdownEl.innerHTML = `${minutes}:${seconds}`;
-          document.querySelector("#question").innerHTML = splitquestions[count];
-          // console.log(blobs_recorded)
-          textToSpeech(splitquestions[count]);
-          count ++;
-          if (count == splitquestions.length){
-            stop_button.style.display="none";
-            stop.style.display="inline-block";
-          }
-          if (count == (splitquestions.length+1)){ 
-            // let blob = new Blob(blobs_recorded, { 'type' : 'video/mp4;' });
-            // console.log("blob size", blob.size)
-            // console.log("blob text", blob.text)
-            // blobs_recorded = [];
-            // let videoURL = window.URL.createObjectURL(blob);
-            // console.log("blob recorded", blobs_recorded)
-
-            stop.click();
-            stop.style.display="none";
-            // window.location.replace("{% url 'home' %}");
-          }
-          interval = setInterval(updateCountdown, 1000);
-          console.log("hello,", blob.size)
-          console.log("my blob is ", blob, blob.size, blob.text, blob.type)
-          // console.log(blobs_recorded)
-      }, false);
 </script>
  
     <!-- Optional JavaScript -->

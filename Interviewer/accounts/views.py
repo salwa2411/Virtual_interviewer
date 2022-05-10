@@ -6,19 +6,32 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
 
 from django.contrib import messages
-
 from django.contrib.auth.decorators import login_required
 
 from .forms import CreateUserForm
 
 from django.http.response import StreamingHttpResponse
-from accounts.camera import VideoCamera
+# from accounts.camera import VideoCamera
 import cv2
+# from . import queue
+import os
+import json
+from .tasks import anas
 
-
+from . import analysis
+from . import data_queue
+from . import audio_analysis
+from . import audio_emotion
+from accounts.models import Profile
+import datetime
+# from pathlib import Path
+import os.path
 
 counter = 0
 def home(request):
+    if not os.path.exists('../Interviewer/media'):
+        os.mkdir("../Interviewer/media")
+        os.mkdir("../Interviewer/media/audioData")
     return render(request,'index.html')
 def registerUser(request):
     if request.user.is_authenticated:
@@ -37,9 +50,7 @@ def registerUser(request):
 			
         context = {'form':form}
         return render(request, 'accounts/sign_login.html',context)
-    # else:
-    #     return render(request,'home.html')
-
+    
 def loginUser(request):
 	if request.user.is_authenticated:
 		return redirect('home')
@@ -69,51 +80,35 @@ def takeInterview(request):
         return render(request,'interview.html', {'questions': questions})
     return redirect('login')
 
-def profile(request):
-    if request.user.is_authenticated:
-        return render(request,'profile.html')
-    return redirect('login')
-    
+audioEmotion = None
+
 def temp(request):
+    # global audioEmotion
     global counter
     counter+=1
+    path = os.getcwd() +r"/media/"
+    username = request.user.username
+    userid = request.user.id
     if request.method == 'POST':
         print(request.body)
-        with open("usertest" + str(counter) + ".mp4", "wb") as test:
+
+        with open(f"{path}"+f"{username}" + str(counter) + ".mp4", "wb") as test:
             test.write(request.body)
 
-        # video = request.FILES['file']
-        # print("video",video)
-
+        anas.delay(username, counter, path, userid)
         return HttpResponse("Done")
     return render(request,'temp.html')
 
-
-'''
-def gen(camera):
-    i = 0
-    while True:
-        frame = camera.get_frame()[0]
-        print(frame[1])
-        yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
-        # if i== 10: #and i <80 :
-            # break
-            # cv2.imwrite(r'E:\Project\final_project_material\Interviewer\kang'+str(i)+'.jpg',frame[1])
-        # cv2.imshow('Image',frame[1])
-        # i+=1
-
-
-def video_feed(request):
-    return StreamingHttpResponse(gen(VideoCamera()),content_type='multipart/x-mixed-replace; boundary=frame')
-
-
-
-def temp1(request):
-    return render(request,'temp1.html')
-
-
-'''
-
-
-
-
+def profile(request):
+    if request.user.is_authenticated:
+        data2 = Profile.objects.filter(user_id=request.user).last().facial_expressions_values
+        data2 = data2.strip('][').split(', ')
+        data2 = list(map(int, data2))
+        data4 = Profile.objects.filter(user_id=request.user).last().audio_analysis_values
+        data4 = data4.strip('][').split(', ')
+        data4 = list(map(int, data4))
+        data5 = Profile.objects.filter(user_id=request.user).last().average_face_emotions
+        data6 = Profile.objects.filter(user_id=request.user).last().average_audio_emotions
+        data = Profile.objects.filter(user_id=request.user).order_by('id').reverse()
+        return render(request,'profile.html', {'data2': data2, 'data4': data4, 'avg_face': data5, 'avg_audio': data6, 'data': data})
+    return redirect('login')
