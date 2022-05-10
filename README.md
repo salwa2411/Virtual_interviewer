@@ -20,5 +20,5 @@ their anxiety by themselves before they take a real interview. User Study
 indicates the system can help shy college students cope with interview anxiety 
 and improve their interview training performance effectively.
 
-Framework: Django
+Framework: Django, 
 Technology: DeepLearning
