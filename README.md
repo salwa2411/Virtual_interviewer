@@ -20,12 +20,12 @@ their anxiety by themselves before they take a real interview. User Study
 indicates the system can help shy college students cope with interview anxiety 
 and improve their interview training performance effectively.
 
-Framework: Django, 
+Framework: Django\
 Technology: DeepLearning
 
 # Roles and Responsibilties
 
-Asiya Pathan: Face emotion recognition and Web Development.
-Salwa Tisekar: Web development and Speech emotion recognition.
-Aman Kazi: Speech emotion recognition, Ajax and Hosting.
-Shahidraja Shaikh: Face emotion recognition, CNN and Hosting.
+Asiya Pathan: Face emotion recognition and Web Development\
+Salwa Tisekar: Web development and Speech emotion recognition\
+Aman Kazi: Speech emotion recognition, Ajax and Hosting\
+Shahidraja Shaikh: Face emotion recognition, CNN and Hosting\
