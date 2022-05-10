@@ -22,3 +22,10 @@ and improve their interview training performance effectively.
 
 Framework: Django, 
 Technology: DeepLearning
+
+# Roles and Responsibilties
+
+Asiya Pathan: Face emotion recognition and Web Development.
+Salwa Tisekar: Web development and Speech emotion recognition.
+Aman Kazi: Speech emotion recognition, Ajax and Hosting.
+Shahidraja Shaikh: Face emotion recognition, CNN and Hosting.
