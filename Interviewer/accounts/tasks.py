@@ -36,15 +36,17 @@ def anas(username, counter, path, id):
     dir = "../Interviewer/media/audioData/"
     for f in os.listdir(dir):
         os.remove(os.path.join(dir, f))
-    total = sum(final_emotions.values())
-    average = total//len(final_emotions)
-    minimum_diff = float("inf")
-    emotion = None
+    maximum = max(final_emotions.values())
+    # average = total//len(final_emotions)
+    # minimum_diff = float("inf")
+    # emotion = None
     print("after calculations")
     for key in final_emotions:
-        if abs(final_emotions[key] - average) < minimum_diff and final_emotions[key] > 0:
-            minimum_diff = abs(final_emotions[key] - average)
+        # if abs(final_emotions[key] - average) < minimum_diff and final_emotions[key] > 0:
+        #     minimum_diff = abs(final_emotions[key] - average)
+        if final_emotions[key] == maximum:
             emotion = key
+            break
     audioEmotion = emotion
 
     analysis.analyze(data_queue.path)
@@ -56,14 +58,16 @@ def anas(username, counter, path, id):
     for key in data.keys():
         curr_user = key #username+str(counter)
         face_emotion = data[curr_user]
-        min_diff = float("inf")
-        summ = sum(face_emotion.values())
-        avg = summ//len(face_emotion)
+        # min_diff = float("inf")
+        maximum = max(face_emotion.values())
+        # avg = summ//len(face_emotion)
         emt = None
         for i in face_emotion:
-            if abs(face_emotion[i] - avg) < min_diff and face_emotion[i] > 0:
-                min_diff = abs(face_emotion[i] - avg)
+            # if abs(face_emotion[i] - avg) < min_diff and face_emotion[i] > 0:
+            #     min_diff = abs(face_emotion[i] - avg)
+            if face_emotion[i] == maximum:
                 emt = i
+                break
 
         profile_instance = Profile()
         profile_instance.user_id = tempuser

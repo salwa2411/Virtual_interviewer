@@ -57,16 +57,25 @@ pass.addEventListener('keyup', function(){
 
 
 
-
 pass1.addEventListener('keyup', function(){
 	var p_times1 = document.querySelector('.p_times1');
 	var p_check1 = document.querySelector('.p_check1');
 	if (pass1.value.length>0 && pass.value == pass1.value){
-		pass1.style.border = '1px solid green';
-		p_times1.style.display = "none";
-		p_check1.style.display = "block";
-		document.getElementById('password-strength-status').style.color = "green";
-		document.getElementById('password-strength-status').innerHTML = "password matched";
+		if (strongRegex.test(pass1.value)){
+			pass1.style.border = '1px solid green';
+			p_times1.style.display = "none";
+			p_check1.style.display = "block";
+			document.getElementById('password-strength-status').style.color = "green";
+			document.getElementById('password-strength-status').innerHTML = "password matched";
+		}
+		else{
+			pass1.style.border = '1px solid red';
+			p_times1.style.display = 'block';
+			p_check1.style.display = 'none';
+			document.getElementById('password-strength-status').style.color = "red";
+			document.getElementById('password-strength-status').innerHTML = "Weak Password";
+
+		}	
 		
 
 	}
@@ -75,15 +84,42 @@ pass1.addEventListener('keyup', function(){
 		p_times1.style.display = 'block';
 		p_check1.style.display = 'none';
 		document.getElementById('password-strength-status').style.color = "red";
-		document.getElementById('password-strength-status').innerHTML = "mistach password";
-		
-
+		document.getElementById('password-strength-status').innerHTML = "mismatch password";
 	}
-
-
 
 })
 
+// pass1.addEventListener('keyup', function(){
+// 	var p_times = document.querySelector('.p_times');
+// 	var p_check = document.querySelector('.p_check');
+// 	// var p_times1 = document.querySelector('.p_times1');
+// 	// var p_check1 = document.querySelector('.p_check1');
+	
+// 	if (strongRegex.test(pass1.value)){
+// 		pass1.style.border = '1px solid green';
+// 		p_times.style.display = "none";
+// 		p_check.style.display = "block";
+// 		document.getElementById('password-strength-status').style.color = "green";
+// 		document.getElementById('password-strength-status').innerHTML = "Strong Password";
+// 		return false;
+// 	}
+// 	else if (pass1.value.length > 0 && pass1.value.length < 8) {
+// 		pass1.style.border = '1px solid red';
+// 		p_times.style.display = 'block';
+// 		p_check.style.display = 'none';
+// 		document.getElementById('password-strength-status').style.color = "red";
+// 		document.getElementById('password-strength-status').innerHTML = "Weak Password";
+// 		return false;
+// 	}
+// 	else if (pass1.value.length == 0){
+// 		document.getElementById('password-strength-status').style.color = "red";
+// 		document.getElementById('password-strength-status').innerHTML = "*Please fill the required fields!";
+// 		return false;
+// 	}
+
+
+	
+// })
 
 var email = document.querySelector('#mail');
 email.addEventListener('keyup', function(){
