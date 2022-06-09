@@ -30,4 +30,3 @@ Salwa Tisekar: Web development and Speech emotion recognition\
 Aman Kazi: Speech emotion recognition, Ajax and Hosting\
 Shahidraja Shaikh: Face emotion recognition, CNN and Hosting
 
-https://github.com/salwa2411/Virtual_interviewer
